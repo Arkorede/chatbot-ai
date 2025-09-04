@@ -35,7 +35,7 @@ export default function ChatWindow() {
   }, [messages]);
 
   const sendMessage = async (message: string) => {
-    if (!message.trim() || isLoading) return;
+    if (!message || !message.trim() || isLoading) return;
 
     const userMessage: Message = {
       id: crypto.randomUUID(),
@@ -47,7 +47,11 @@ export default function ChatWindow() {
     setIsLoading(true);
 
     try {
-      const conversations = [...persistedHistory, userMessage];
+      const validatedPersistedHistory = persistedHistory.filter(
+        (msg) => msg && msg.content && msg.content.trim().length > 0
+      );
+
+      const conversations = [...validatedPersistedHistory, userMessage];
 
       const response = await fetch("/api/chat", {
         method: "POST",
@@ -80,6 +84,7 @@ export default function ChatWindow() {
       setIsLoading(false);
     }
   };
+
   return (
     <div>
       <ScrollArea className="p-4 flex-1 h-full max-h-[90vh] overflow-y-auto">
