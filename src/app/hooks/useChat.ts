@@ -33,7 +33,7 @@ export const useChat = () => {
       id: crypto.randomUUID(),
       isUser: true,
       content: message,
-      // timestamp: Date.now(),
+      timestamp: Date.now(),
     };
 
     setMessages((prevMessages) => [...prevMessages, userMessage]);
@@ -64,6 +64,7 @@ export const useChat = () => {
           isUser: false,
           content: "Sorry, something went wrong. Please try again later",
           isError: true,
+          timestamp: Date.now(),
         };
         setMessages((prevMessages) => [...prevMessages, errorMessage]);
         return;
@@ -73,7 +74,7 @@ export const useChat = () => {
         id: crypto.randomUUID(),
         isUser: false,
         content: data.reply,
-        // timestamp: Date.now(),
+        timestamp: Date.now(),
       };
 
       setMessages((prevMessages) => [...prevMessages, botMessage]);

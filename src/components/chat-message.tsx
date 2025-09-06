@@ -8,6 +8,7 @@ interface ChatMessageProps {
   content: string;
   markdown?: boolean;
   isError?: boolean;
+  timestamp?: string;
 }
 
 const ChatMessage = ({
@@ -15,6 +16,7 @@ const ChatMessage = ({
   markdown,
   content,
   isError,
+  timestamp,
 }: ChatMessageProps) => {
   return (
     <div
@@ -30,7 +32,7 @@ const ChatMessage = ({
       </Avatar>
 
       <Card
-        className={`px-3 pt-1 pb-2 max-w-[75%] rounded-md text-sm leading-relaxed whitespace-pre-wrap break-words border-black ${
+        className={`px-3 pt-1 pb-2 gap-2 max-w-[75%] rounded-md text-sm leading-relaxed whitespace-pre-wrap break-words border-black ${
           isUser
             ? "bg-[#2F2F2F] text-white"
             : `${
@@ -93,6 +95,12 @@ const ChatMessage = ({
           </ReactMarkdown>
         ) : (
           <p>{content}</p>
+        )}
+
+        {timestamp && (
+          <div className="text-[8px] text-end text-white opacity-70">
+            {timestamp}
+          </div>
         )}
       </Card>
     </div>

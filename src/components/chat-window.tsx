@@ -3,6 +3,7 @@ import { ScrollArea } from "./ui/scroll-area";
 import ChatMessage from "./chat-message";
 import ChatInput from "./chat-input";
 import { useChat } from "@/app/hooks/useChat";
+import { formatTime } from "@/app/utils/formatTime";
 
 export default function ChatWindow() {
   const { messages, isLoading, sendMessage } = useChat();
@@ -17,6 +18,9 @@ export default function ChatWindow() {
             content={message.content}
             markdown={!message.isUser}
             isError={message.isError}
+            timestamp={
+              message.timestamp ? formatTime(message.timestamp) : undefined
+            }
           />
         ))}
         {isLoading && (
