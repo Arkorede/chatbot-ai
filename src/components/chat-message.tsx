@@ -7,9 +7,15 @@ interface ChatMessageProps {
   isUser: boolean;
   content: string;
   markdown?: boolean;
+  isError?: boolean;
 }
 
-const ChatMessage = ({ isUser, markdown, content }: ChatMessageProps) => {
+const ChatMessage = ({
+  isUser,
+  markdown,
+  content,
+  isError,
+}: ChatMessageProps) => {
   return (
     <div
       className={`flex w-full mb-4 gap-2 ${
@@ -17,15 +23,21 @@ const ChatMessage = ({ isUser, markdown, content }: ChatMessageProps) => {
       }`}
       aria-label={isUser ? "User message" : "AI message"}
     >
-      <Avatar className="h-8 w-8 shrink-0">
-        <AvatarFallback className="text-[10px] font-medium text-black">
+      <Avatar className="flex items-center justify-center h-8 w-8 shrink-0 bg-[#4b5563]">
+        <AvatarFallback className="text-[12px] font-semibold text-white">
           <span>{isUser ? "U" : "AI"}</span>
         </AvatarFallback>
       </Avatar>
 
       <Card
         className={`px-3 pt-1 pb-2 max-w-[75%] rounded-md text-sm leading-relaxed whitespace-pre-wrap break-words border-black ${
-          isUser ? "bg-[#2F2F2F] text-white" : "bg-[#128C7E] text-white"
+          isUser
+            ? "bg-[#2F2F2F] text-white"
+            : `${
+                isError
+                  ? "bg-[#2F2F2F] text-red-400"
+                  : "bg-[#128C7E] text-white"
+              }`
         }`}
       >
         {markdown ? (

@@ -1,4 +1,3 @@
-"use client";
 import { useState } from "react";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
@@ -25,7 +24,7 @@ const ChatInput = ({ onSendMessage, isLoading }: ChatInputProps) => {
   };
 
   return (
-    <div className="flex gap-2 p-4  border-t max-h-[10vh] text-white">
+    <div className="flex gap-2 p-4 border-t max-h-[10vh] text-white">
       <Input
         value={message}
         onChange={(e) => setMessage(e.target.value)}

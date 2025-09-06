@@ -1,11 +1,12 @@
 "use client";
 import { useState, useEffect } from "react";
-import { Message } from "../api/chat/route";
+import { type Message } from "../api/chat/route";
 
 export const useChat = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [persistedHistory, setPersistedHistory] = useState<Message[]>([]);
+  const [isError, setIsError] = useState<boolean>(false);
 
   useEffect(() => {
     const savedMessages = localStorage.getItem("chat-messages");
@@ -33,6 +34,7 @@ export const useChat = () => {
       id: crypto.randomUUID(),
       isUser: true,
       content: message,
+      // timestamp: Date.now(),
     };
 
     setMessages((prevMessages) => [...prevMessages, userMessage]);
@@ -57,10 +59,22 @@ export const useChat = () => {
 
       const data = await response.json();
 
+      if (!response.ok || !data.reply) {
+        setIsError(true);
+        const errorMessage: Message = {
+          id: crypto.randomUUID(),
+          isUser: false,
+          content: "Sorry, something went wrong. Please try again later",
+        };
+        setMessages((prevMessages) => [...prevMessages, errorMessage]);
+        return;
+      }
+
       const botMessage: Message = {
         id: crypto.randomUUID(),
         isUser: false,
         content: data.reply,
+        // timestamp: Date.now(),
       };
 
       setMessages((prevMessages) => [...prevMessages, botMessage]);
@@ -81,5 +95,6 @@ export const useChat = () => {
     messages,
     isLoading,
     sendMessage,
+    isError,
   };
 };
