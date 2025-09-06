@@ -1,89 +1,11 @@
 "use client";
-import React, { useState, useEffect } from "react";
 import { ScrollArea } from "./ui/scroll-area";
 import ChatMessage from "./chat-message";
 import ChatInput from "./chat-input";
-
-interface Message {
-  id: string;
-  isUser: boolean;
-  content: string;
-}
+import { useChat } from "@/app/hooks/useChat";
 
 export default function ChatWindow() {
-  const [messages, setMessages] = useState<Message[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [persistedHistory, setPersistedHistory] = useState<Message[]>([]);
-
-  useEffect(() => {
-    const savedMessages = localStorage.getItem("chat-messages");
-    if (savedMessages) {
-      try {
-        const parsed = JSON.parse(savedMessages);
-        setPersistedHistory(parsed);
-      } catch (error) {
-        console.error("Failed to parse saved messages:", error);
-      }
-    }
-  }, []);
-
-  useEffect(() => {
-    if (messages.length > 0) {
-      localStorage.setItem("chat-messages", JSON.stringify(messages));
-      setPersistedHistory(messages);
-    }
-  }, [messages]);
-
-  const sendMessage = async (message: string) => {
-    if (!message || !message.trim() || isLoading) return;
-
-    const userMessage: Message = {
-      id: crypto.randomUUID(),
-      isUser: true,
-      content: message,
-    };
-
-    setMessages((prevMessages) => [...prevMessages, userMessage]);
-    setIsLoading(true);
-
-    try {
-      const validatedPersistedHistory = persistedHistory.filter(
-        (msg) => msg && msg.content && msg.content.trim().length > 0
-      );
-
-      const conversations = [...validatedPersistedHistory, userMessage];
-
-      const response = await fetch("/api/chat", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          conversations,
-        }),
-      });
-
-      const data = await response.json();
-
-      const botMessage: Message = {
-        id: crypto.randomUUID(),
-        isUser: false,
-        content: data.reply,
-      };
-
-      setMessages((prevMessages) => [...prevMessages, botMessage]);
-    } catch (error) {
-      console.error("Error sending messsage", error);
-      const errorMessage: Message = {
-        id: crypto.randomUUID(),
-        isUser: false,
-        content: "Sorry, something went wrong. Please try again later",
-      };
-      setMessages((prevMessages) => [...prevMessages, errorMessage]);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const { messages, isLoading, sendMessage } = useChat();
 
   return (
     <div>
