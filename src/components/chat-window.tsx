@@ -5,7 +5,7 @@ import ChatInput from "./chat-input";
 import { useChat } from "@/app/hooks/useChat";
 
 export default function ChatWindow() {
-  const { messages, isLoading, sendMessage, isError } = useChat();
+  const { messages, isLoading, sendMessage } = useChat();
 
   return (
     <div>
@@ -16,7 +16,7 @@ export default function ChatWindow() {
             isUser={message.isUser}
             content={message.content}
             markdown={!message.isUser}
-            isError={isError}
+            isError={message.isError}
           />
         ))}
         {isLoading && (

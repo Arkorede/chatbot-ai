@@ -6,7 +6,6 @@ export const useChat = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [persistedHistory, setPersistedHistory] = useState<Message[]>([]);
-  const [isError, setIsError] = useState<boolean>(false);
 
   useEffect(() => {
     const savedMessages = localStorage.getItem("chat-messages");
@@ -60,11 +59,11 @@ export const useChat = () => {
       const data = await response.json();
 
       if (!response.ok || !data.reply) {
-        setIsError(true);
         const errorMessage: Message = {
           id: crypto.randomUUID(),
           isUser: false,
           content: "Sorry, something went wrong. Please try again later",
+          isError: true,
         };
         setMessages((prevMessages) => [...prevMessages, errorMessage]);
         return;
@@ -95,6 +94,5 @@ export const useChat = () => {
     messages,
     isLoading,
     sendMessage,
-    isError,
   };
 };

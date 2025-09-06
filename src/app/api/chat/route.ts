@@ -5,6 +5,7 @@ export interface Message {
   isUser: boolean;
   content: string;
   timestamp?: number;
+  isError?: boolean;
 }
 
 export async function POST(req: NextRequest) {
