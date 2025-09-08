@@ -1,8 +1,17 @@
 "use client";
-import { useState, useEffect } from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
 import { type Message } from "../api/chat/route";
 
-export const useChat = () => {
+interface ChatContextType {
+  messages: Message[];
+  isLoading: boolean;
+  clearChat: () => void;
+  sendMessage: (message: string) => Promise<void>;
+}
+
+const ChatContext = createContext<ChatContextType | undefined>(undefined);
+
+export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [persistedHistory, setPersistedHistory] = useState<Message[]>([]);
@@ -91,9 +100,26 @@ export const useChat = () => {
     }
   };
 
-  return {
+  const clearChat = () => {
+    setMessages([]);
+    setPersistedHistory([]);
+    localStorage.removeItem("chat-messages");
+  };
+
+  const value: ChatContextType = {
     messages,
     isLoading,
     sendMessage,
+    clearChat,
   };
+
+  return <ChatContext.Provider value={value}>{children}</ChatContext.Provider>;
+};
+
+export const useChat = () => {
+  const context = useContext(ChatContext);
+  if (context === undefined) {
+    throw new Error("useChat must be used within a ChatProvider");
+  }
+  return context;
 };

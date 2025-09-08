@@ -2,7 +2,7 @@
 import { ScrollArea } from "./ui/scroll-area";
 import ChatMessage from "./chat-message";
 import ChatInput from "./chat-input";
-import { useChat } from "@/app/hooks/useChat";
+import { useChat } from "@/app/context/ChatContext";
 import { formatTime } from "@/app/utils/formatTime";
 
 export default function ChatWindow() {
