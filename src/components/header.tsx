@@ -24,7 +24,7 @@ const Header = () => {
             variant="ghost"
             size="sm"
             onClick={clearChat}
-            className="text-white cursor-pointer"
+            className="text-white cursor-pointer text-xs sm:text-base"
           >
             <Trash2 className="w-4 h-4 mr-0.5 sm:mr-2" />
             Clear Chat

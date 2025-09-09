@@ -92,7 +92,8 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
       const errorMessage: Message = {
         id: crypto.randomUUID(),
         isUser: false,
-        content: "Sorry, something went wrong. Please try again later",
+        isError: true,
+        content: "Sorry, something went wrong. Please try again ler",
       };
       setMessages((prevMessages) => [...prevMessages, errorMessage]);
     } finally {
