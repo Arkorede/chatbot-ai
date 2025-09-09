@@ -88,12 +88,12 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
 
       setMessages((prevMessages) => [...prevMessages, botMessage]);
     } catch (error) {
-      console.error("Error sending messsage", error);
+      console.error("Network/fetch error:", error);
       const errorMessage: Message = {
         id: crypto.randomUUID(),
         isUser: false,
         isError: true,
-        content: "Sorry, something went wrong. Please try again ler",
+        content: "Connection error. Please check your internet and try again.",
       };
       setMessages((prevMessages) => [...prevMessages, errorMessage]);
     } finally {
