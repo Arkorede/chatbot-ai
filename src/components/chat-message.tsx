@@ -1,8 +1,8 @@
 import { AvatarFallback } from "@radix-ui/react-avatar";
 import { Avatar } from "./ui/avatar";
 import { Card } from "./ui/card";
-import Spinner from "./spinner";
 import ReactMarkdown from "react-markdown";
+import Loader from "./loader";
 
 interface ChatMessageProps {
   isUser: boolean;
@@ -97,7 +97,7 @@ const ChatMessage = ({
             {content}
           </ReactMarkdown>
         ) : (
-          <p>{isLoading ? <Spinner /> : content}</p>
+          <p>{isLoading ? <Loader /> : content}</p>
         )}
 
         {timestamp && (
