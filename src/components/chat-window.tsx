@@ -24,9 +24,12 @@ export default function ChatWindow() {
           />
         ))}
         {isLoading && (
-          <ChatMessage isUser={false} content="Loading..." markdown={true} />
+          <ChatMessage
+            isUser={false}
+            content="Loading..."
+            isLoading={isLoading}
+          />
         )}
-        {isLoading}
       </ScrollArea>
       <ChatInput onSendMessage={sendMessage} isLoading={isLoading} />
     </div>
